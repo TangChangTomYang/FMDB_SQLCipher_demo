@@ -1,0 +1,14 @@
+//
+//  FMDB-Prefix.pch
+//  CinCommon
+//
+//  Created by ProbeStar on 13-7-17.
+//  Copyright (c) 2013年 p. All rights reserved.
+//
+
+#ifndef CinCommon_FMDB_Prefix_pch
+#define CinCommon_FMDB_Prefix_pch
+
+
+
+#endif
