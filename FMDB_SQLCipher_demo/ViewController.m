@@ -33,7 +33,12 @@
 
 
 -(void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
-    [self createDataBase];
+    NSError *err = nil;
+    NSData *data = [NSData data];
+    [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&err];
+    
+    NSLog(@"%@", err.localizedDescription);
+//    [self createDataBase];
 }
 
 
@@ -155,12 +160,12 @@
     NSString *tempPath = [NSString stringWithFormat:@"%@.tmp.db",path];
     // 删除 tempPath
     [self removeFile:tempPath];
-    const char *attachSql = [NSString stringWithFormat:@"ATTACH DATABASE '%@' AS encrypted KEY '%@';",
-                                                        tempPath,
-                                                        sqlCipherKey]
-                                                        .UTF8String;
     char *errmsg;
-    sqlite3_exec(unencrypted_db, attachSql, NULL, NULL, &errmsg);
+    
+    NSString *attachSql = [NSString stringWithFormat:@"ATTACH DATABASE '%@' AS encrypted KEY '%@';",
+                                                        tempPath,
+                                                        sqlCipherKey];
+    sqlite3_exec(unencrypted_db, attachSql.UTF8String, NULL, NULL, &errmsg);
     if (errmsg) {
         NSLog(@"数据库SQLCipher迁移时, 附加一个空的加密数据库到明文数据库 失败:%@, return",
               [NSString stringWithUTF8String:errmsg]);
@@ -168,9 +173,19 @@
         return NO;
     }
     
+    NSString *beginSql = @"begin exclusive transaction;";
+    sqlite3_exec(unencrypted_db, beginSql.UTF8String, NULL, NULL, &errmsg);
+    if (errmsg) {
+        NSLog(@"数据库SQLCipher迁移时, 开启事务失败 失败:%@, return",
+              [NSString stringWithUTF8String:errmsg]);
+        sqlite3_close(unencrypted_db);
+        return NO;
+    }
+    
     // 3. export database
     // 将明文数据库中的数据导出到 加密数据库
-    sqlite3_exec(unencrypted_db, "SELECT sqlcipher_export('encrypted');", NULL, NULL, &errmsg);
+    NSString *exportSql = @"SELECT sqlcipher_export('encrypted');";
+    sqlite3_exec(unencrypted_db, exportSql.UTF8String, NULL, NULL, &errmsg);
     if (errmsg) {
         NSLog(@"数据库SQLCipher迁移时, 将明文数据库中的数据导出到 加密数据库 失败:%@, return",
               [NSString stringWithUTF8String:errmsg]);
@@ -178,9 +193,19 @@
         return NO;
     }
     
+    NSString *commitSql = @"commit transaction;";
+    sqlite3_exec(unencrypted_db, commitSql.UTF8String, NULL, NULL, &errmsg);
+    if (errmsg) {
+        NSLog(@"数据库SQLCipher迁移时, 提交事务失败 失败:%@, return",
+              [NSString stringWithUTF8String:errmsg]);
+        sqlite3_close(unencrypted_db);
+        return NO;
+    }
+    
     // 4. Detach encrypted database
     // 解除加密数据库的附加操作
-    sqlite3_exec(unencrypted_db, "DETACH DATABASE encrypted;", NULL, NULL, &errmsg);
+    NSString *detachSql = @"DETACH DATABASE encrypted;";
+    sqlite3_exec(unencrypted_db, detachSql.UTF8String, NULL, NULL, &errmsg);
     if (errmsg) {
         NSLog(@"数据库SQLCipher迁移时, 解除加密数据库的附加操作 失败:%@, return", [NSString stringWithUTF8String:errmsg]);
         sqlite3_close(unencrypted_db);
@@ -189,11 +214,6 @@
     
     // 5. close unencrypted_db
     sqlite3_close(unencrypted_db);
-    NSLog(@"数据库SQLCipher迁移时, 关闭未加密 数据库");
-    
-    
-    // 6. delete tmp database
-    NSLog(@"数据库SQLCipher迁移时, 重命名加密数据库为为加密数据库名字 ");
     BOOL ret = [self replaceFile:tempPath toFile:path];
     
     NSLog(@"数据库SQLCipher迁移时, 完成 ret: %d",ret);
