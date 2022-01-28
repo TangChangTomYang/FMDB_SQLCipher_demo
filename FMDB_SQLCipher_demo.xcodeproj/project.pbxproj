@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 51;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -14,6 +14,7 @@
 		146F0B3E279E7D0000B64555 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 146F0B3D279E7D0000B64555 /* Assets.xcassets */; };
 		146F0B41279E7D0000B64555 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 146F0B3F279E7D0000B64555 /* LaunchScreen.storyboard */; };
 		146F0B44279E7D0000B64555 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 146F0B43279E7D0000B64555 /* main.m */; };
+		14ED80FB27A3B14E006E57BB /* FMDatabase+UCPSQLCipher.m in Sources */ = {isa = PBXBuildFile; fileRef = 14ED80FA27A3B14E006E57BB /* FMDatabase+UCPSQLCipher.m */; };
 		F53F2FE5665ED9B416809FBF /* Pods_FMDB_SQLCipher_demo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9FFE1557804B8499137DB7B0 /* Pods_FMDB_SQLCipher_demo.framework */; };
 /* End PBXBuildFile section */
 
@@ -30,6 +31,8 @@
 		146F0B40279E7D0000B64555 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		146F0B42279E7D0000B64555 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		146F0B43279E7D0000B64555 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		14ED80F927A3B14E006E57BB /* FMDatabase+UCPSQLCipher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "FMDatabase+UCPSQLCipher.h"; sourceTree = "<group>"; };
+		14ED80FA27A3B14E006E57BB /* FMDatabase+UCPSQLCipher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "FMDatabase+UCPSQLCipher.m"; sourceTree = "<group>"; };
 		2A78297A179A7FAF5101A4A8 /* Pods-FMDB_SQLCipher_demo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FMDB_SQLCipher_demo.debug.xcconfig"; path = "Target Support Files/Pods-FMDB_SQLCipher_demo/Pods-FMDB_SQLCipher_demo.debug.xcconfig"; sourceTree = "<group>"; };
 		9FFE1557804B8499137DB7B0 /* Pods_FMDB_SQLCipher_demo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_FMDB_SQLCipher_demo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		DCE5D05305F2655886B0DEB9 /* Pods-FMDB_SQLCipher_demo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FMDB_SQLCipher_demo.release.xcconfig"; path = "Target Support Files/Pods-FMDB_SQLCipher_demo/Pods-FMDB_SQLCipher_demo.release.xcconfig"; sourceTree = "<group>"; };
@@ -72,6 +75,7 @@
 				146F0B32279E7CFC00B64555 /* AppDelegate.m */,
 				146F0B34279E7CFC00B64555 /* SceneDelegate.h */,
 				146F0B35279E7CFC00B64555 /* SceneDelegate.m */,
+				14ED80F827A3B128006E57BB /* category */,
 				146F0B37279E7CFC00B64555 /* ViewController.h */,
 				146F0B38279E7CFC00B64555 /* ViewController.m */,
 				146F0B3A279E7CFC00B64555 /* Main.storyboard */,
@@ -81,6 +85,15 @@
 				146F0B43279E7D0000B64555 /* main.m */,
 			);
 			path = FMDB_SQLCipher_demo;
+			sourceTree = "<group>";
+		};
+		14ED80F827A3B128006E57BB /* category */ = {
+			isa = PBXGroup;
+			children = (
+				14ED80F927A3B14E006E57BB /* FMDatabase+UCPSQLCipher.h */,
+				14ED80FA27A3B14E006E57BB /* FMDatabase+UCPSQLCipher.m */,
+			);
+			path = category;
 			sourceTree = "<group>";
 		};
 		308C1651C816499A54050275 /* Frameworks */ = {
@@ -97,7 +110,6 @@
 				2A78297A179A7FAF5101A4A8 /* Pods-FMDB_SQLCipher_demo.debug.xcconfig */,
 				DCE5D05305F2655886B0DEB9 /* Pods-FMDB_SQLCipher_demo.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -218,6 +230,7 @@
 				146F0B39279E7CFC00B64555 /* ViewController.m in Sources */,
 				146F0B33279E7CFC00B64555 /* AppDelegate.m in Sources */,
 				146F0B44279E7D0000B64555 /* main.m in Sources */,
+				14ED80FB27A3B14E006E57BB /* FMDatabase+UCPSQLCipher.m in Sources */,
 				146F0B36279E7CFC00B64555 /* SceneDelegate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
