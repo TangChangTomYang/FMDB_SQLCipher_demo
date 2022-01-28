@@ -17,6 +17,8 @@
 #import "sqlite3.h"
 #endif
 
+#import "FMDatabase+UCPSQLCipher.h"
+
 @interface ViewController ()
 @property(nonatomic, strong)FMDatabaseQueue *dbQueue;
 
@@ -33,13 +35,50 @@
 
 
 -(void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
-    NSError *err = nil;
-    NSData *data = [NSData data];
-    [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&err];
-    
-    NSLog(@"%@", err.localizedDescription);
+   
 //    [self createDataBase];
+    
+    NSArray *directoryArr = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
+    NSString *documentDirectory = [directoryArr objectAtIndex:0];
+    NSString *dataBaseDirectory = [documentDirectory stringByAppendingPathComponent:@"zhangsan"];
+        
+//    NSLog(@"===createDataBase 数据库目录: \n %@",dataBaseDirectory);
+    if (![[NSFileManager defaultManager] fileExistsAtPath:dataBaseDirectory]) {
+        [[NSFileManager defaultManager] createDirectoryAtPath:dataBaseDirectory
+                                  withIntermediateDirectories:NO
+                                                   attributes:nil
+                                                        error:nil];
+    }
+    NSString *dbPath = [dataBaseDirectory stringByAppendingPathComponent:@"RCSdbxx.db"];
+    
+    NSLog(@"dbPath: %@", dbPath);
+    
+    
+    
+    self.dbQueue = [FMDatabaseQueue  ucp_databaseQueueWithPath:dbPath encryptKey:@"123"];
+    
+//    self.dbQueue = [FMDatabaseQueue  ucp_databaseQueueWithPath:dbPath encryptKey:nil];
+//    [self.dbQueue inDatabase:^(FMDatabase * _Nonnull db) {
+//        [db setKey:@"123"];
+//    }];
+    
+    [self.dbQueue inDatabase:^(FMDatabase *db) {
+         NSString *sql= @"CREATE TABLE IF NOT EXISTS chataa(\
+                      messageID         Blob PRIMARY KEY,\
+                      OrderId           Integer,\
+                      MessageType       Integer,\
+                      Status            Integer \
+                      );";
+
+         BOOL ret = [db executeUpdate:sql];
+         NSLog(@"---创建表: %d",ret);
+    }];
+    
 }
+
+
+
+
 
 
 -(void)createDataBase{
