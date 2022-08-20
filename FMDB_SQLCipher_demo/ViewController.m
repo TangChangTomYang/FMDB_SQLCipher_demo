@@ -55,7 +55,7 @@
     
     
     
-    self.dbQueue = [FMDatabaseQueue  ucp_databaseQueueWithPath:dbPath encryptKey:@"123"];
+    self.dbQueue = [FMDatabaseQueue  ucp_databaseQueueWithPath:dbPath encryptKey:nil];
     
 //    self.dbQueue = [FMDatabaseQueue  ucp_databaseQueueWithPath:dbPath encryptKey:nil];
 //    [self.dbQueue inDatabase:^(FMDatabase * _Nonnull db) {
